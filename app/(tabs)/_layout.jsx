@@ -11,7 +11,7 @@ export default function TabLayout() {
         name="index"
         options={{
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="home" size={20} color="black" />
+            <FontAwesome name="home" size={size} color="black" />
           ),
         }}
       />
@@ -19,7 +19,7 @@ export default function TabLayout() {
         name="allNotes"
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Feather name="plus-square" size={20} color="black" />
+            <Feather name="plus-square" size={size} color="black" />
           ),
         }}
       />
@@ -27,7 +27,7 @@ export default function TabLayout() {
         name="profile"
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person-circle-outline" size={24} color="black" />
+            <Ionicons name="person-circle-outline" size={size} color="black" />
           ),
         }}
       />
