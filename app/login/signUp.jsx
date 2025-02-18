@@ -1,16 +1,31 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
-import { useRouter } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Feather from '@expo/vector-icons/Feather'; // Importing Feather icons
+import axios from "axios";
 
 const SignUpScreen = () => {
   const router = useRouter();
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigation = useNavigation();
+  function handleSubmit(){
+    if (!email || !password || !userName) {
+      Alert.alert("Please fill all fields");
+      return;
+    }
+    const userData = {
+      userName: userName,
+      email: email,
+      password: password
+    }
+    axios.post('http://localhost:5001/register', userData) .then(res=> console.log(res.data)) .catch(e=> console.log(e)); //change localhost:5001 to ipv4 ipconfig of the pc if using on mobile or emulator
+    router.push("/allNotes");
+  }
 
-  const onCreateAccount = () => {
+  const onhandleSubmit = () => {
     if (!email || !password || !userName) {
       Alert.alert("Please fill all fields");
       return;
@@ -56,7 +71,7 @@ const SignUpScreen = () => {
           />
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={onCreateAccount}>
+        <TouchableOpacity style={styles.button} onPress={()=>handleSubmit()}>
           <Text style={styles.buttonText}>Sign Up</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => router.push("/login/signIn")}> 

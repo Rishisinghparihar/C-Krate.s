@@ -2,12 +2,31 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { useRouter } from "expo-router";
 import { MaterialIcons, Feather } from "@expo/vector-icons";
+import axios from "axios";
 
 const SignUpScreen = () => {
   const router = useRouter();
-  const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  function handleSubmit() {
+    console.log(email, password);
+      if (!email || !password ) {
+        Alert.alert("Please fill all fields");
+        return;
+      }
+    const userData = {
+      email: email,
+      password,
+    }
+    axios.post('http://localhost:5001/login', userData).then(res=>
+    {console.log(res.data);
+      if (res.data.status =="ok"){
+        Alert.alert('sign in successfull ');
+        router.push("/allNotes");
+      }
+    })
+  }
 
   const onCreateAccount = () => {
     if (!email || !password || !userName) {
@@ -43,11 +62,11 @@ const SignUpScreen = () => {
           />
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={onCreateAccount}>
-          <Text style={styles.buttonText}>Sign Up</Text>
+        <TouchableOpacity style={styles.button} onPress={()=>handleSubmit()}>
+          <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => router.push("/login/signUp")}>
-          <Text style={styles.Createbutton}>Already have an account? Sign In</Text>
+          <Text style={styles.Createbutton}>Don't have an account? Sign Up</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -126,115 +145,3 @@ const styles = StyleSheet.create({
 });
 
 export default SignUpScreen;
-
-
-
-// import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
-// import React, { useState } from "react";
-// import { StyleSheet } from "react-native";
-// import { useRouter } from "expo-router";
-
-// export default function signIn() {
-//   const router = useRouter();
-//   return (
-//     <View
-//       style={{
-//         padding: 25,
-//       }}
-//     >
-//       <Text style={styles.textheader}>Sign-In</Text>
-//       <Text style={styles.subheader}>Welcome back...!</Text>
-//         <View
-//           style={{
-//             marginTop: 28,
-//           }}
-//         >
-//           <Text>email</Text>
-//           <TextInput
-//             placeholder="email"
-//             style={styles.input}
-//           />
-//         </View>
-//         <View
-//           style={{
-//             marginTop: 18,
-//           }}
-//         >
-//           <Text>password</Text>
-//           <TextInput
-//             placeholder="password"
-//             secureTextEntry={true}
-//             style={styles.input}
-//           />
-//         </View>
-//         <TouchableOpacity 
-//         >
-//           <Text
-//             style={styles.button}
-//             onPress={()=>router.push('/(tabs)/index')}
-//           >
-//             Sign In
-//           </Text>
-//         </TouchableOpacity>
-//         <TouchableOpacity>
-//           <Text
-//             style={styles.Createbutton}
-//             onPress={() => router.push("/login/signUp")}
-//           >
-//             Create Account
-//           </Text>
-//         </TouchableOpacity>
-//     </View>
-//   );
-// }
-
-// export const styles = StyleSheet.create({
-//   textheader: {
-//     fontSize: 35,
-//     fontWeight: "bold",
-//     color: "black",
-//     textAlign: "center",
-//     marginTop: 20,
-//   },
-//   subheader: {
-//     fontSize: 35,
-//     fontWeight: "bold",
-//     color: 'gray',
-//     textAlign: "center",
-//     marginTop: 20,
-//   },
-//   input: {
-//     height: 40,
-//     borderWidth: 1,
-//     borderColor: "gray",
-//     borderRadius: 10,
-//     marginTop: 12,
-//     alignItems: "center",
-//     backgroundColor: "white",
-//   },
-//   button: {
-//     fontSize: 20,
-//     fontWeight: "bold",
-//     color: "white",
-//     textAlign: "center",
-//     backgroundColor: 'gray',
-//     padding: 10,
-//     borderRadius: 10,
-//     margin: 30,
-//   },
-//   Createbutton: {
-//     fontSize: 20,
-//     fontWeight: "light",
-//     color: "black",
-//     textAlign: "center",
-//     padding: 10,
-//     borderRadius: 10,
-//     borderWidth: 1,
-//     borderColor: 'gray',
-//     marginTop: 5,
-//     marginBottom: 10,
-//     marginLeft: 30,
-//     marginRight: 30,
-//   },
- 
-// });
