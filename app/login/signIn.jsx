@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "reac
 import { useRouter } from "expo-router";
 import { MaterialIcons, Feather } from "@expo/vector-icons";
 import axios from "axios";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const SignUpScreen = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -19,10 +19,11 @@ const SignUpScreen = () => {
       email: email,
       password,
     }
-    axios.post('http://localhost:5001/login', userData).then(res=>
+    axios.post('http://192.168.54.147:5001/login', userData).then(res=>
     {console.log(res.data);
       if (res.data.status =="ok"){
         Alert.alert('sign in successfull ');
+        AsyncStorage.setItem('token',res.data.data);
         router.push("/allNotes");
       }
     })
