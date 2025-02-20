@@ -25,6 +25,8 @@ const SignUpScreen = () => {
         Alert.alert('sign in successfull ');
         AsyncStorage.setItem('token',res.data.data);
         router.push("/allNotes");
+        // console.log(token);
+        
       }
     })
   }

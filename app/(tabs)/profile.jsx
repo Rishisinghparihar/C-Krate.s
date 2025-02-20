@@ -9,7 +9,8 @@ const Profile = ({ onEditPress }) => {
 
   async function getData() {
     try {
-      const token = await AsyncStorage.getItem("token");
+      const token = await AsyncStorage.getItem("token").then(token => console.log("token not found")
+      );
       if (!token) {
         console.error("Token not found!");
         return;
@@ -17,8 +18,11 @@ const Profile = ({ onEditPress }) => {
       console.log("Retrieved Token:", token);
 
 
-      const res = await axios.post("http://localhost:5001/userdata", { token });  // ⬅️ Replace X.X with your local IP
-      console.log("API Response:", JSON.stringify(res.data, null, 2));
+      const res = await axios.post("http://localhost:5001/userdata", {token}
+       
+       
+      );  // ⬅️ Replace X.X with your local IP
+      // console.log("API Response:", res.data, null, 2);
       console.log("User Data:", res.data);
       console.log("Full Response Data:", res.data);
     //   console.log(userData.userName);
@@ -38,6 +42,8 @@ const Profile = ({ onEditPress }) => {
   useEffect(() => {
     console.log("Updated userData:", userData);
     getData();
+    console.log("data",getData());
+    
   }, []);
 
   if (loading) {
