@@ -1,104 +1,124 @@
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  FlatList,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
-import { Ionicons, Feather } from "@expo/vector-icons";
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
 
-const HomeScreen = ({ navigation }) => {
-  const [notes, setNotes] = useState([]);
-  const [searchText, setSearchText] = useState("");
-
+const Header = ({
+  onAddNote,
+  onDeleteNote,
+  onChangeColor,
+  onFormatText,
+  onAddImage,
+}) => {
+  const colors = ["#FFF", "#FF5733", "#33FF57", "#3357FF", "#FF33A1"];
+  const [selectedColor, setSelectedColor] = useState(colors[0]);
   return (
-    <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
+    <View>
+      <View style={styles.headerContainer}>
         <Text style={styles.title}>C-Krate.s</Text>
-        <View style={styles.headerIcons}>
-          <TouchableOpacity
-           >
-            <Feather name="settings" size={22} color="white" />
+
+        <View style={styles.colorPicker}>
+          {colors.map((color) => (
+            <TouchableOpacity
+              key={color}
+              style={[
+                styles.colorCircle,
+                {
+                  backgroundColor: color,
+                  borderColor: selectedColor === color ? "#fff" : "transparent",
+                },
+              ]}
+            />
+          ))}
+        </View>
+
+        <View style={styles.rightSection}>
+          <TouchableOpacity style={styles.iconButton}>
+            <Ionicons name="trash-outline" size={22} color="white" />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.iconButton}>
+            <Ionicons name="add-circle-outline" size={23} color="white" />
           </TouchableOpacity>
         </View>
       </View>
 
-      {/* Search Bar */}
-      <View style={styles.searchContainer}>
-        <TextInput
-          placeholder="Search..."
-          placeholderTextColor="#aaa"
-          style={styles.searchInput}
-          value={searchText}
-          onChangeText={setSearchText}
-        />
-        <Feather name="search" size={20} color="gray" style={styles.searchIcon} />
+      <View style={styles.formatToolbar}>
+        <TouchableOpacity>
+          <Text style={styles.formatboldButton}>Bold</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity>
+          <Text style={styles.formatitalicButton}>Italic</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity>
+          <Text style={styles.formatuButton}>U</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={onAddImage}>
+          <Ionicons name="image-outline" size={22} color="white" />
+        </TouchableOpacity>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "gray",
-    padding: 10,
-  },
-  header: {
+  headerContainer: {
+    backgroundColor: "#1e1e1e",
+    paddingVertical: 10,
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 10,
+    justifyContent: "space-between",
+    paddingHorizontal: 15,
   },
   title: {
     fontSize: 22,
-    fontWeight: "bold",
-    color: "#fff",
+    fontWeight: "600",
+    color: "white",
   },
-  headerIcons: {
-    flexDirection: "row",
-    gap: 15,
-  },
-  searchContainer: {
+  rightSection: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "white",
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    marginBottom: 10,
-    borderColor: "#fff",
   },
-  searchInput: {
-    flex: 1,
-    color: "black",
-    padding: 8,
+  iconButton: {
+    marginLeft: 12,
   },
-  searchIcon: {
-    marginLeft: 5,
+  colorPicker: {
+    flexDirection: "row",
+    justifyContent: "center",
+    paddingVertical: 5,
   },
-  noteCard: {
+  colorCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    marginHorizontal: 4,
+    borderWidth: 2,
+  },
+  formatToolbar: {
     backgroundColor: "#333",
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 10,
-    borderLeftWidth: 3,
-    borderLeftColor: "#FFD700",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderTopColor: "#444",
   },
-  noteText: {
-    fontSize: 16,
-    color: "#fff",
+  formatboldButton: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "white",
   },
-  noteDate: {
-    textAlign: "right",
-    fontSize: 12,
-    color: "#FFD700",
-    marginTop: 5,
+  formatitalicButton: {
+    fontSize: 18,
+    fontStyle: "italic",
+    color: "white",
+  },
+  formatuButton: {
+    fontSize: 18,
+    color: "white",
+    textDecorationLine: "underline",
   },
 });
 
-export default HomeScreen;
+export default Header;
