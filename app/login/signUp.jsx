@@ -21,7 +21,7 @@ const SignUpScreen = () => {
       email: email,
       password: password
     }
-    axios.post('http://192.168.54.147:5001/register', userData) .then(res=> console.log(res.data)) .catch(e=> console.log(e)); //change localhost:5001 to ipv4 ipconfig of the pc if using on mobile or emulator
+    axios.post('http://localhost:5001/register', userData) .then(res=> console.log(res.data)) .catch(e=> console.log(e)); //change localhost:5001 to ipv4 ipconfig of the pc if using on mobile or emulator
     router.push("/allNotes");
   }
 

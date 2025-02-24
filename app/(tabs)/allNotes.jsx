@@ -14,7 +14,27 @@ import { Ionicons, Feather } from "@expo/vector-icons";
 const HomeScreen = ({ navigation }) => {
   const [notes, setNotes] = useState([]);
   const [searchText, setSearchText] = useState("");
-
+    // ✅ Load notes from AsyncStorage + MongoDB
+    useEffect(() => {
+      const fetchNotes = async () => {
+        try {
+          // Load from AsyncStorage
+          const storedNotes = await AsyncStorage.getItem("notes");
+          if (storedNotes) setNotes(JSON.parse(storedNotes));
+  
+          // Load from MongoDB
+          const res = await axios.get("http://localhost:5001/notes");
+          if (res.data.status === "ok") {
+            setNotes(res.data.notes);
+            await AsyncStorage.setItem("notes", JSON.stringify(res.data.notes));
+          }
+        } catch (error) {
+          console.error("Error fetching notes:", error);
+        }
+      };
+  
+      fetchNotes();
+    }, []);
   return (
     <View style={styles.container}>
       {/* Header */}

@@ -19,11 +19,11 @@ const SignUpScreen = () => {
       email: email,
       password,
     }
-    axios.post('http://192.168.54.147:5001/login', userData).then(res=>
+    axios.post('http://localhost:5001/login', userData).then(res=>
     {console.log(res.data);
       if (res.data.status =="ok"){
-        Alert.alert('sign in successfull ');
-        AsyncStorage.setItem('token',res.data.data);
+        Alert.alert('sign in successfull');
+        AsyncStorage.setItem('token',res.data.token);
         router.push("/allNotes");
         // console.log(token);
         
