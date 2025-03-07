@@ -135,12 +135,13 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { Feather } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
 const HomeScreen = ({ navigation }) => {
   const [notes, setNotes] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [filteredNotes, setFilteredNotes] = useState([]);
-
+  const router = useRouter(); 
   // ✅ Fetch Notes from Backend + AsyncStorage
   useEffect(() => {
     const fetchNotes = async () => {
@@ -204,10 +205,20 @@ const HomeScreen = ({ navigation }) => {
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.noteCard}
-            onPress={() => navigation.navigate("NoteDetails", { note: item })}
+            onPress={() =>
+              router.push({
+                pathname: "/NoteDetails",
+                params: {
+                  title: item.title,
+                  content: item.content,
+                  // date: item.date,
+                },
+              })
+            }
+            
           >
             <Text style={styles.noteText}>{item.title}</Text>
-            <Text style={styles.noteDate}>{new Date(item.date).toLocaleDateString()}</Text>
+            {/* <Text style={styles.noteDate}>{new Date(item.date).toLocaleDateString()}</Text> */}
           </TouchableOpacity>
         )}
       />

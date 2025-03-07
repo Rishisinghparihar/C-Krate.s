@@ -26,7 +26,7 @@ const Header = ({ onAddNote, onDeleteNote, onChangeColor, onFormatText, onAddIma
       await AsyncStorage.setItem("notes", JSON.stringify(updatedNotes));
 
       // 🔹 Save in MongoDB via API
-      await axios.post("https://your-api-url.com/addnote", newNote);
+      await axios.post("https://localhost:5001/addnote", newNote);
 
       // 🔹 Update parent component state
       onAddNote(newNote);
