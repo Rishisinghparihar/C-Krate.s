@@ -112,7 +112,7 @@ const Header = ({ onAddNote, onDeleteNote, onChangeColor, onFormatText, onAddIma
           multiline={true} // Multiple lines allow karega
           numberOfLines={10} // Kitni lines dikhegi by default
           textAlignVertical="top" // Text ko top se start karega
-          scrollEnabled={false} 
+          scrollEnabled={false}
         />
         {/* </View> */}
         
@@ -129,7 +129,7 @@ const Header = ({ onAddNote, onDeleteNote, onChangeColor, onFormatText, onAddIma
         /> */}
       </View>
       <View style={styles.view33}>
-        <TouchableOpacity>✨</TouchableOpacity>
+        <TouchableOpacity><Text>Ai</Text></TouchableOpacity>
         <TouchableOpacity onPress={() => {
         setTitle("");
         setContent("");
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     // backgroundColor:"#fff",
     flex: 1,
     flexDirection: "row",
-    padding:20,
+    padding:10,
     gap:60,
     alignItems: "center",
     justifyContent: "flex-end",
