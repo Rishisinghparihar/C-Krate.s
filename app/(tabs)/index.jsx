@@ -24,11 +24,13 @@ const Header = ({
   onFormatText,
   onAddImage,
 }) => {
-  const colors = ["#FFF", "#FF5733", "#33FF57", "#3357FF", "#FF33A1"];
+  const colors = ["gray", "#FF5733", "#33FF57", "#3357FF", "#FF33A1"];
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isVisible, setIsVisible] = useState(false);
+
+
 
   const toggleModal = () => {
     setIsVisible(!isVisible);
@@ -77,8 +79,8 @@ const Header = ({
               <TouchableOpacity
                 key={color}
                 onPress={() => {
-                  setSelectedColor(color);
-                  onChangeColor(color);
+                  setSelectedColor(color); // Update selected color
+                  onChangeColor(color); // Pass selected color to parent component
                 }}
                 style={[
                   styles.colorCircle,
@@ -176,32 +178,44 @@ const Header = ({
       </View>
       <View style={styles.viewaibutton}>
         <TouchableOpacity onPress={toggleModal} style={styles.buttonai}>
-          <Text style={styles.buttonText} >Ai</Text>
+          <Text style={styles.buttonText}>Ai</Text>
         </TouchableOpacity>
 
-         {/* Pop-up Card */}
-      <Modal transparent visible={isVisible} animationType="fade">
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Select an Option</Text>
-            
-            <TouchableOpacity onPress={() => handleOptionPress('Option 1')} style={styles.option}>
-              <Text style={styles.optionText}>summarize</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleOptionPress('Option 2')} style={styles.option}>
-              <Text style={styles.optionText}>Auto Correct</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleOptionPress('Option 3')} style={styles.option}>
-              <Text style={styles.optionText}>Cappitalize</Text>
-            </TouchableOpacity>
+        {/* Pop-up Card */}
+        <Modal transparent visible={isVisible} animationType="fade">
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Select an Option</Text>
 
-            {/* Close Button */}
-            <TouchableOpacity onPress={toggleModal} style={styles.closeButton}>
-              <Text style={styles.closeButtonText}>Close</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleOptionPress("Option 1")}
+                style={styles.option}
+              >
+                <Text style={styles.optionText}>summarize</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleOptionPress("Option 2")}
+                style={styles.option}
+              >
+                <Text style={styles.optionText}>Auto Correct</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleOptionPress("Option 3")}
+                style={styles.option}
+              >
+                <Text style={styles.optionText}>Cappitalize</Text>
+              </TouchableOpacity>
+
+              {/* Close Button */}
+              <TouchableOpacity
+                onPress={toggleModal}
+                style={styles.closeButton}
+              >
+                <Text style={styles.closeButtonText}>Close</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
       </View>
     </>
   );
@@ -329,7 +343,7 @@ const styles = StyleSheet.create({
   },
   to1: {},
   viewaibutton: {
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
     // marginTop: 50,
     // justifyContent: "flex-end",
     // alignItems: "flex-end",
@@ -337,7 +351,7 @@ const styles = StyleSheet.create({
     // marginBottom: 22,
   },
   buttonai: {
-    backgroundColor: 'gray',
+    backgroundColor: "gray",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 100,
@@ -353,59 +367,59 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   dropdown: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: "#f0f0f0",
     borderRadius: 10,
-    overflow: 'hidden',
+    overflow: "hidden",
     width: 150,
     marginTop: 5,
-    position: 'absolute',
-    right:80,
+    position: "absolute",
+    right: 80,
     // left:0
   },
   option: {
     padding: 10,
-    alignItems: 'center',
+    alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomColor: "#ccc",
   },
   optionText: {
     fontSize: 16,
-    color: '#333',
+    color: "#333",
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
   },
   modalContent: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 20,
     borderRadius: 10,
     width: 250,
-    alignItems: 'center',
+    alignItems: "center",
     elevation: 5,
   },
   modalTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
   option: {
     paddingVertical: 10,
-    width: '100%',
-    alignItems: 'center',
+    width: "100%",
+    alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: "#ddd",
   },
   optionText: {
     fontSize: 16,
-    color: '#333',
+    color: "#333",
   },
   closeButton: {
     marginTop: 15,
     padding: 10,
-    backgroundColor: 'gray',
+    backgroundColor: "gray",
     borderRadius: 5,
   },
   closeButtonText: {
