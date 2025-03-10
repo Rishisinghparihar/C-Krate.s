@@ -1,27 +1,54 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, FlatList } from "react-native";
+import React, { useRef, useState } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  TextInput,
+  FlatList,
+  Animated,
+  ScrollView,
+  Modal,
+} from "react-native";
 import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
 import { router, useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import Entypo from '@expo/vector-icons/Entypo';
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import Entypo from "@expo/vector-icons/Entypo";
 
-const Header = ({ onAddNote, onDeleteNote, onChangeColor, onFormatText, onAddImage }) => {
+const Header = ({
+  onAddNote,
+  onDeleteNote,
+  onChangeColor,
+  onFormatText,
+  onAddImage,
+}) => {
   const colors = ["#FFF", "#FF5733", "#33FF57", "#3357FF", "#FF33A1"];
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [isVisible, setIsVisible] = useState(false);
+
+  const toggleModal = () => {
+    setIsVisible(!isVisible);
+  };
+
+  const handleOptionPress = (option) => {
+    console.log(`Selected: ${option}`);
+    toggleModal(); // Close modal after selecting
+  };
 
   // ✅ Add Note Function
   const addNote = async () => {
     if (!title.trim() || !content.trim()) return;
 
     const newNote = { title, content, color: selectedColor };
-    
+
     try {
       // 🔹 Save in AsyncStorage
-      const existingNotes = JSON.parse(await AsyncStorage.getItem("notes")) || [];
+      const existingNotes =
+        JSON.parse(await AsyncStorage.getItem("notes")) || [];
       const updatedNotes = [...existingNotes, newNote];
       await AsyncStorage.setItem("notes", JSON.stringify(updatedNotes));
 
@@ -57,7 +84,8 @@ const Header = ({ onAddNote, onDeleteNote, onChangeColor, onFormatText, onAddIma
                   styles.colorCircle,
                   {
                     backgroundColor: color,
-                    borderColor: selectedColor === color ? "#fff" : "transparent",
+                    borderColor:
+                      selectedColor === color ? "#fff" : "transparent",
                   },
                 ]}
               />
@@ -93,7 +121,7 @@ const Header = ({ onAddNote, onDeleteNote, onChangeColor, onFormatText, onAddIma
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         {/* Title Input */}
         <TextInput
           style={styles.titleinput}
@@ -115,7 +143,7 @@ const Header = ({ onAddNote, onDeleteNote, onChangeColor, onFormatText, onAddIma
           scrollEnabled={false}
         />
         {/* </View> */}
-        
+
         {/* List of Notes */}
         {/* <FlatList
           data={notes}
@@ -127,17 +155,54 @@ const Header = ({ onAddNote, onDeleteNote, onChangeColor, onFormatText, onAddIma
             </View>
           )}
         /> */}
-      </View>
+      </ScrollView>
       <View style={styles.view33}>
-        <TouchableOpacity><Text>Ai</Text></TouchableOpacity>
-        <TouchableOpacity onPress={() => {
-        setTitle("");
-        setContent("");
-      }}
-      ><Entypo name="cross" size={26} color="red" /></TouchableOpacity>
-        <TouchableOpacity 
-        onPress={addNote} ><MaterialIcons name="done" size={24} color="green" /></TouchableOpacity>
+        {/* <TouchableOpacity >
+            <Text style={styles.button1}>Ai</Text>
+        </TouchableOpacity> */}
+        <TouchableOpacity
+          onPress={() => {
+            setTitle("");
+            setContent("");
+          }}
+        >
+          <Text style={styles.button1}>cancel</Text>
+          {/* <Entypo name="cross" size={26} color="red" /> */}
+        </TouchableOpacity>
+        <TouchableOpacity onPress={addNote}>
+          <Text style={styles.button1}>Add</Text>
+          {/* <MaterialIcons name="done" size={24} color="green" /> */}
+        </TouchableOpacity>
+      </View>
+      <View style={styles.viewaibutton}>
+        <TouchableOpacity onPress={toggleModal} style={styles.buttonai}>
+          <Text style={styles.buttonText} >Ai</Text>
+        </TouchableOpacity>
+
+         {/* Pop-up Card */}
+      <Modal transparent visible={isVisible} animationType="fade">
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Select an Option</Text>
+            
+            <TouchableOpacity onPress={() => handleOptionPress('Option 1')} style={styles.option}>
+              <Text style={styles.optionText}>summarize</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => handleOptionPress('Option 2')} style={styles.option}>
+              <Text style={styles.optionText}>Auto Correct</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => handleOptionPress('Option 3')} style={styles.option}>
+              <Text style={styles.optionText}>Cappitalize</Text>
+            </TouchableOpacity>
+
+            {/* Close Button */}
+            <TouchableOpacity onPress={toggleModal} style={styles.closeButton}>
+              <Text style={styles.closeButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
         </View>
+      </Modal>
+      </View>
     </>
   );
 };
@@ -201,7 +266,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
   },
-  titleinput:{
+  titleinput: {
     backgroundColor: "#fff",
     padding: 10,
     marginBottom: 10,
@@ -227,7 +292,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10, // Text ka space maintain karne ke liye
     borderRadius: 5, // Thoda smooth look ke liye
     flexWrap: "wrap", // Multiline ke liye kaam aayega agar required ho
-    multiline: true
+    multiline: true,
   },
   noteCard: {
     backgroundColor: "#1e1e1e",
@@ -244,16 +309,109 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#fff",
   },
-  view33:{
+  view33: {
     // backgroundColor:"#fff",
     flex: 1,
     flexDirection: "row",
-    padding:10,
-    gap:60,
+    padding: 10,
+    gap: 60,
     alignItems: "center",
     justifyContent: "flex-end",
-    marginBottom:100
-  }
+    marginBottom: 100,
+  },
+  button1: {
+    backgroundColor: "gray",
+    padding: 10,
+    borderRadius: 8,
+    // color:"white",
+    fontSize: 18,
+    borderColor: "black",
+  },
+  to1: {},
+  viewaibutton: {
+    alignItems: 'flex-end',
+    // marginTop: 50,
+    // justifyContent: "flex-end",
+    // alignItems: "flex-end",
+    // height: 45,
+    // marginBottom: 22,
+  },
+  buttonai: {
+    backgroundColor: 'gray',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 100,
+    // padding: 15,
+    // backgroundColor: "gray",
+    // borderRadius: "100%",
+    // fontSize: 18,
+    // borderColor: "black",
+    // justifyContent: "center",
+  },
+  buttonText: {
+    // color: '',
+    fontSize: 16,
+  },
+  dropdown: {
+    backgroundColor: '#f0f0f0',
+    borderRadius: 10,
+    overflow: 'hidden',
+    width: 150,
+    marginTop: 5,
+    position: 'absolute',
+    right:80,
+    // left:0
+  },
+  option: {
+    padding: 10,
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  optionText: {
+    fontSize: 16,
+    color: '#333',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    width: 250,
+    alignItems: 'center',
+    elevation: 5,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  option: {
+    paddingVertical: 10,
+    width: '100%',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  optionText: {
+    fontSize: 16,
+    color: '#333',
+  },
+  closeButton: {
+    marginTop: 15,
+    padding: 10,
+    backgroundColor: 'gray',
+    borderRadius: 5,
+  },
+  closeButtonText: {
+    // color: '',
+    fontSize: 16,
+  },
 });
 
 export default Header;
