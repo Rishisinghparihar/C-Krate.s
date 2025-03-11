@@ -16,7 +16,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Entypo from "@expo/vector-icons/Entypo";
-
+// import {pickImage}  from "../..components/imagepicker.jsx";
+import { pickImage } from "../../components/imagepicker";
 const Header = ({
   onAddNote,
   onDeleteNote,
@@ -29,9 +30,10 @@ const Header = ({
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-
-
-
+  const [isBold, setIsBold] = useState(false); // ✅ Bold state added
+  const [isItalic, setIsItalic] = useState(false); // ✅ italic state added
+  const [isUnderlined, setIsUnderlined] = useState(false); // ✅ underline state added
+  const [selectedImage, setSelectedImage] = useState(null);
   const toggleModal = () => {
     setIsVisible(!isVisible);
   };
@@ -80,7 +82,7 @@ const Header = ({
                 key={color}
                 onPress={() => {
                   setSelectedColor(color); // Update selected color
-                  onChangeColor(color); // Pass selected color to parent component
+                  // onChangeColor?.(color); // Pass selected color to parent component
                 }}
                 style={[
                   styles.colorCircle,
@@ -106,21 +108,24 @@ const Header = ({
         </View>
 
         <View style={styles.formatToolbar}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setIsBold(!isBold)}>
             <Text style={styles.formatboldButton}>Bold</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setIsItalic(!isItalic)}>
             <Text style={styles.formatitalicButton}>Italic</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setIsUnderlined(!isUnderlined)}>
             <Text style={styles.formatuButton}>U</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={onAddImage}>
-            <Ionicons name="image-outline" size={22} color="white" />
-          </TouchableOpacity>
+          <TouchableOpacity onPress={() => pickImage(setSelectedImage)} 
+          // style={{ backgroundColor: "#007bff", padding: 10, borderRadius: 5 }}
+          >
+        <Ionicons name="image-outline" size={22} color="white" />
+        {/* <Text style={{ color: "white" }}>Select Image</Text> */}
+      </TouchableOpacity>
         </View>
       </View>
       <ScrollView style={styles.container}>
@@ -134,7 +139,7 @@ const Header = ({
         {/* Content Input */}
         {/* <View style={styles.contentInputView}> */}
         <TextInput
-          style={styles.contentinput}
+         style={[styles.contentinput, { color: selectedColor,fontWeight: isBold ? "bold" : "normal" , fontStyle: isItalic ? "italic":"normal", textDecorationLine: isUnderlined?"underlined":"none" }]} // ✅ Ye color change karega
           placeholder="Write a quick note..."
           value={content}
           onChangeText={setContent}
@@ -180,6 +185,14 @@ const Header = ({
         <TouchableOpacity onPress={toggleModal} style={styles.buttonai}>
           <Text style={styles.buttonText}>Ai</Text>
         </TouchableOpacity>
+        <View>
+        {selectedImage && (
+        <Image
+          source={{ uri: selectedImage }}
+          style={{ width: 200, height: 200, marginBottom: 20 }}
+        />
+      )}
+        </View>
 
         {/* Pop-up Card */}
         <Modal transparent visible={isVisible} animationType="fade">
@@ -216,6 +229,7 @@ const Header = ({
             </View>
           </View>
         </Modal>
+
       </View>
     </>
   );
@@ -429,3 +443,141 @@ const styles = StyleSheet.create({
 });
 
 export default Header;
+
+
+// import React, { useState } from "react";
+// import {
+//   View,
+//   Text,
+//   TouchableOpacity,
+//   StyleSheet,
+//   TextInput,
+//   ScrollView,
+// } from "react-native";
+
+// const Header = ({ onAddNote }) => {
+//   const colors = ["gray", "#FF5733", "#33FF57", "#3357FF", "#FF33A1"];
+//   const [selectedColor, setSelectedColor] = useState(colors[0]);
+//   const [title, setTitle] = useState("");
+//   const [content, setContent] = useState("");
+
+//   // ✅ Add Note Function
+//   const addNote = () => {
+//     if (!title.trim() || !content.trim()) return;
+//     const newNote = { title, content, color: selectedColor };
+//     onAddNote(newNote);
+//     setTitle("");
+//     setContent("");
+//   };
+
+//   return (
+//     <>
+//       <View style={styles.headerContainer}>
+//         <Text style={styles.title}>C-Krate.s</Text>
+
+//         <View style={styles.colorPicker}>
+//           {colors.map((color) => (
+//             <TouchableOpacity
+//               key={color}
+//               onPress={() => setSelectedColor(color)}
+//               style={[
+//                 styles.colorCircle,
+//                 { backgroundColor: color, borderColor: selectedColor === color ? "#fff" : "transparent" },
+//               ]}
+//             />
+//           ))}
+//         </View>
+//       </View>
+
+//       <ScrollView style={styles.container}>
+//         {/* Title Input (No Color Change) */}
+//         <TextInput
+//           style={styles.titleinput}
+//           placeholder="Title"
+//           value={title}
+//           onChangeText={setTitle}
+//         />
+
+//         {/* Content Input (Text Color Changes) */}
+//         <TextInput
+//           style={[styles.contentinput, { color: selectedColor }]} // ✅ Ye color change karega
+//           placeholder="Write a quick note..."
+//           value={content}
+//           onChangeText={setContent}
+//           multiline={true}
+//           numberOfLines={10}
+//           textAlignVertical="top"
+//         />
+//       </ScrollView>
+
+//       <View style={styles.buttonContainer}>
+//         <TouchableOpacity onPress={() => setContent("")}>
+//           <Text style={styles.button}>Cancel</Text>
+//         </TouchableOpacity>
+//         <TouchableOpacity onPress={addNote}>
+//           <Text style={styles.button}>Add</Text>
+//         </TouchableOpacity>
+//       </View>
+//     </>
+//   );
+// };
+
+// const styles = StyleSheet.create({
+//   headerContainer: {
+//     backgroundColor: "#1e1e1e",
+//     paddingVertical: 10,
+//     flexDirection: "row",
+//     alignItems: "center",
+//     justifyContent: "space-between",
+//     paddingHorizontal: 15,
+//   },
+//   title: {
+//     fontSize: 22,
+//     fontWeight: "600",
+//     color: "white",
+//   },
+//   colorPicker: {
+//     flexDirection: "row",
+//     justifyContent: "center",
+//     paddingVertical: 5,
+//   },
+//   colorCircle: {
+//     width: 20,
+//     height: 20,
+//     borderRadius: 10,
+//     marginHorizontal: 4,
+//     borderWidth: 2,
+//   },
+//   container: {
+//     padding: 10,
+//   },
+//   titleinput: {
+//     backgroundColor: "#fff",
+//     padding: 10,
+//     marginBottom: 10,
+//     borderRadius: 5,
+//     fontSize: 20,
+//   },
+//   contentinput: {
+//     backgroundColor: "#fff",
+//     padding: 10,
+//     borderRadius: 5,
+//     fontSize: 18,
+//   },
+//   buttonContainer: {
+//     flexDirection: "row",
+//     padding: 10,
+//     gap: 60,
+//     alignItems: "center",
+//     justifyContent: "flex-end",
+//     marginBottom: 100,
+//   },
+//   button: {
+//     backgroundColor: "gray",
+//     padding: 10,
+//     borderRadius: 8,
+//     fontSize: 18,
+//   },
+// });
+
+// export default Header;
