@@ -16,7 +16,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Entypo from "@expo/vector-icons/Entypo";
-// import {pickImage}  from "../..components/imagepicker.jsx";
 import { pickImage } from "../../components/imagepicker";
 const Header = ({
   onAddNote,
@@ -30,9 +29,9 @@ const Header = ({
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-  const [isBold, setIsBold] = useState(false); // ✅ Bold state added
-  const [isItalic, setIsItalic] = useState(false); // ✅ italic state added
-  const [isUnderlined, setIsUnderlined] = useState(false); // ✅ underline state added
+  const [isBold, setIsBold] = useState(false); 
+  const [isItalic, setIsItalic] = useState(false); 
+  const [isUnderlined, setIsUnderlined] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const toggleModal = () => {
     setIsVisible(!isVisible);
@@ -43,26 +42,26 @@ const Header = ({
     toggleModal(); // Close modal after selecting
   };
 
-  // ✅ Add Note Function
+  // Add Note Function
   const addNote = async () => {
     if (!title.trim() || !content.trim()) return;
 
     const newNote = { title, content, color: selectedColor };
 
     try {
-      // 🔹 Save in AsyncStorage
+      // Save in AsyncStorage
       const existingNotes =
         JSON.parse(await AsyncStorage.getItem("notes")) || [];
       const updatedNotes = [...existingNotes, newNote];
       await AsyncStorage.setItem("notes", JSON.stringify(updatedNotes));
 
-      // 🔹 Save in MongoDB via API
+      // Save in MongoDB via API
       await axios.post("https://localhost:5001/addnote", newNote);
 
-      // 🔹 Update parent component state
+      // Update parent component state
       onAddNote(newNote);
 
-      // 🔹 Reset Input Fields
+      // Reset Input Fields
       setTitle("");
       setContent("");
     } catch (error) {
@@ -82,7 +81,6 @@ const Header = ({
                 key={color}
                 onPress={() => {
                   setSelectedColor(color); // Update selected color
-                  // onChangeColor?.(color); // Pass selected color to parent component
                 }}
                 style={[
                   styles.colorCircle,
@@ -95,16 +93,6 @@ const Header = ({
               />
             ))}
           </View>
-
-          {/* <View style={styles.rightSection}>
-            <TouchableOpacity style={styles.iconButton}>
-              <Ionicons name="trash-outline" size={22} color="white" />
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.iconButton} onPress={() => router.push("/newnote")}>
-              <Ionicons name="add-circle-outline" size={23} color="white" />
-            </TouchableOpacity>
-          </View> */}
         </View>
 
         <View style={styles.formatToolbar}>
@@ -121,10 +109,8 @@ const Header = ({
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => pickImage(setSelectedImage)} 
-          // style={{ backgroundColor: "#007bff", padding: 10, borderRadius: 5 }}
           >
         <Ionicons name="image-outline" size={22} color="white" />
-        {/* <Text style={{ color: "white" }}>Select Image</Text> */}
       </TouchableOpacity>
         </View>
       </View>
@@ -137,36 +123,19 @@ const Header = ({
           onChangeText={setTitle}
         />
         {/* Content Input */}
-        {/* <View style={styles.contentInputView}> */}
         <TextInput
          style={[styles.contentinput, { color: selectedColor,fontWeight: isBold ? "bold" : "normal" , fontStyle: isItalic ? "italic":"normal", textDecorationLine: isUnderlined?"underlined":"none" }]} // ✅ Ye color change karega
           placeholder="Write a quick note..."
           value={content}
           onChangeText={setContent}
           onSubmitEditing={addNote}
-          multiline={true} // Multiple lines allow karega
-          numberOfLines={10} // Kitni lines dikhegi by default
-          textAlignVertical="top" // Text ko top se start karega
+          multiline={true} // Multiple lines allow
+          numberOfLines={10}
+          textAlignVertical="top" 
           scrollEnabled={false}
         />
-        {/* </View> */}
-
-        {/* List of Notes */}
-        {/* <FlatList
-          data={notes}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.noteCard}>
-              <Text style={styles.noteTitle}>{item.title}</Text>
-              <Text style={styles.note}>{item.content}</Text>
-            </View>
-          )}
-        /> */}
       </ScrollView>
       <View style={styles.view33}>
-        {/* <TouchableOpacity >
-            <Text style={styles.button1}>Ai</Text>
-        </TouchableOpacity> */}
         <TouchableOpacity
           onPress={() => {
             setTitle("");
@@ -302,24 +271,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontStyle: "bold",
   },
-  // contentInputView: {
-  //   backgroundColor: "#fff",
-  //   borderColor: "#fff", // borderBlockColor ki jagah borderColor use karein
-  //   borderWidth: 1, // Border visible karne ke liye
-  //   height: 40, // 20 thoda chhota ho sakta hai, adjust karein
-  //   paddingHorizontal: 10, // Text ka space maintain karne ke liye
-  //   borderRadius: 5, // Thoda smooth look ke liye
-  //   flexWrap: "wrap", // Multiline ke liye kaam aayega agar required ho
-  //   multiline: true
-  // },
+ 
   contentinput: {
     backgroundColor: "#fff",
-    borderColor: "#fff", // borderBlockColor ki jagah borderColor use karein
-    borderWidth: 1, // Border visible karne ke liye
-    height: 400, // 20 thoda chhota ho sakta hai, adjust karein
-    paddingHorizontal: 10, // Text ka space maintain karne ke liye
-    borderRadius: 5, // Thoda smooth look ke liye
-    flexWrap: "wrap", // Multiline ke liye kaam aayega agar required ho
+    borderColor: "#fff", 
+    borderWidth: 1, 
+    height: 400, 
+    paddingHorizontal: 10, 
+    borderRadius: 5, 
+    flexWrap: "wrap", // Multiline ke liye 
     multiline: true,
   },
   noteCard: {
@@ -338,7 +298,6 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   view33: {
-    // backgroundColor:"#fff",
     flex: 1,
     flexDirection: "row",
     padding: 10,
@@ -351,33 +310,20 @@ const styles = StyleSheet.create({
     backgroundColor: "gray",
     padding: 10,
     borderRadius: 8,
-    // color:"white",
     fontSize: 18,
     borderColor: "black",
   },
   to1: {},
   viewaibutton: {
     alignItems: "flex-end",
-    // marginTop: 50,
-    // justifyContent: "flex-end",
-    // alignItems: "flex-end",
-    // height: 45,
-    // marginBottom: 22,
   },
   buttonai: {
     backgroundColor: "gray",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 100,
-    // padding: 15,
-    // backgroundColor: "gray",
-    // borderRadius: "100%",
-    // fontSize: 18,
-    // borderColor: "black",
-    // justifyContent: "center",
   },
   buttonText: {
-    // color: '',
     fontSize: 16,
   },
   dropdown: {
@@ -388,7 +334,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
     position: "absolute",
     right: 80,
-    // left:0
   },
   option: {
     padding: 10,
@@ -437,147 +382,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   closeButtonText: {
-    // color: '',
     fontSize: 16,
   },
 });
 
 export default Header;
-
-
-// import React, { useState } from "react";
-// import {
-//   View,
-//   Text,
-//   TouchableOpacity,
-//   StyleSheet,
-//   TextInput,
-//   ScrollView,
-// } from "react-native";
-
-// const Header = ({ onAddNote }) => {
-//   const colors = ["gray", "#FF5733", "#33FF57", "#3357FF", "#FF33A1"];
-//   const [selectedColor, setSelectedColor] = useState(colors[0]);
-//   const [title, setTitle] = useState("");
-//   const [content, setContent] = useState("");
-
-//   // ✅ Add Note Function
-//   const addNote = () => {
-//     if (!title.trim() || !content.trim()) return;
-//     const newNote = { title, content, color: selectedColor };
-//     onAddNote(newNote);
-//     setTitle("");
-//     setContent("");
-//   };
-
-//   return (
-//     <>
-//       <View style={styles.headerContainer}>
-//         <Text style={styles.title}>C-Krate.s</Text>
-
-//         <View style={styles.colorPicker}>
-//           {colors.map((color) => (
-//             <TouchableOpacity
-//               key={color}
-//               onPress={() => setSelectedColor(color)}
-//               style={[
-//                 styles.colorCircle,
-//                 { backgroundColor: color, borderColor: selectedColor === color ? "#fff" : "transparent" },
-//               ]}
-//             />
-//           ))}
-//         </View>
-//       </View>
-
-//       <ScrollView style={styles.container}>
-//         {/* Title Input (No Color Change) */}
-//         <TextInput
-//           style={styles.titleinput}
-//           placeholder="Title"
-//           value={title}
-//           onChangeText={setTitle}
-//         />
-
-//         {/* Content Input (Text Color Changes) */}
-//         <TextInput
-//           style={[styles.contentinput, { color: selectedColor }]} // ✅ Ye color change karega
-//           placeholder="Write a quick note..."
-//           value={content}
-//           onChangeText={setContent}
-//           multiline={true}
-//           numberOfLines={10}
-//           textAlignVertical="top"
-//         />
-//       </ScrollView>
-
-//       <View style={styles.buttonContainer}>
-//         <TouchableOpacity onPress={() => setContent("")}>
-//           <Text style={styles.button}>Cancel</Text>
-//         </TouchableOpacity>
-//         <TouchableOpacity onPress={addNote}>
-//           <Text style={styles.button}>Add</Text>
-//         </TouchableOpacity>
-//       </View>
-//     </>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   headerContainer: {
-//     backgroundColor: "#1e1e1e",
-//     paddingVertical: 10,
-//     flexDirection: "row",
-//     alignItems: "center",
-//     justifyContent: "space-between",
-//     paddingHorizontal: 15,
-//   },
-//   title: {
-//     fontSize: 22,
-//     fontWeight: "600",
-//     color: "white",
-//   },
-//   colorPicker: {
-//     flexDirection: "row",
-//     justifyContent: "center",
-//     paddingVertical: 5,
-//   },
-//   colorCircle: {
-//     width: 20,
-//     height: 20,
-//     borderRadius: 10,
-//     marginHorizontal: 4,
-//     borderWidth: 2,
-//   },
-//   container: {
-//     padding: 10,
-//   },
-//   titleinput: {
-//     backgroundColor: "#fff",
-//     padding: 10,
-//     marginBottom: 10,
-//     borderRadius: 5,
-//     fontSize: 20,
-//   },
-//   contentinput: {
-//     backgroundColor: "#fff",
-//     padding: 10,
-//     borderRadius: 5,
-//     fontSize: 18,
-//   },
-//   buttonContainer: {
-//     flexDirection: "row",
-//     padding: 10,
-//     gap: 60,
-//     alignItems: "center",
-//     justifyContent: "flex-end",
-//     marginBottom: 100,
-//   },
-//   button: {
-//     backgroundColor: "gray",
-//     padding: 10,
-//     borderRadius: 8,
-//     fontSize: 18,
-//   },
-// });
-
-// export default Header;

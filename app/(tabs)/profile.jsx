@@ -20,19 +20,16 @@ const Profile = ({ onEditPress }) => {
   async function getData() {
     try {
       const token = await AsyncStorage.getItem("token");
-      // .then(token => console.log(token))
-      // .catch(err => console.error(err));
+     
       if (!token) {
         console.error("Token not found!");
         return;
       }
       console.log("Retrieved Token:", token);
 
-      const res = await axios.post("http://localhost:5001/userdata", { token }); // ⬅️ Replace X.X with your local IP
-      // console.log("API Response:", res.data, null, 2);
+      const res = await axios.post("http://localhost:5001/userdata", { token });
       console.log("User Data:", res);
       console.log("Full Response Data:", res.data);
-      //   console.log(userData.userName);
 
       if (res.data.status === "ok") {
         setUserData(res.data.data);
@@ -51,8 +48,7 @@ const Profile = ({ onEditPress }) => {
     const getDataa = async () => {
       console.log("Updated userData:", userData);
       const res = await getData();
-      // .then((d)=>{setDataStore(d)}).catch ((error)=>{console.error("API Error:", error.message)})
-      // console.log("data",getData());
+    
       console.log("dataStore", res);
     };
     getDataa();

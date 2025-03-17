@@ -12,18 +12,18 @@ const NewNote = () => {
     if (!note.trim()) return;
 
     try {
-      // ✅ Get existing notes
+      // Get existing notes
       const storedNotes = await AsyncStorage.getItem("notes");
       const notes = storedNotes ? JSON.parse(storedNotes) : [];
 
-      // ✅ Add new note
+      // Add new note
       const newNote = { text: note };
       const updatedNotes = [...notes, newNote];
 
-      // ✅ Save locally
+      // Save locally
       await AsyncStorage.setItem("notes", JSON.stringify(updatedNotes));
 
-      // ✅ Save to MongoDB
+      // Save to MongoDB
       await axios.post("http://localhost:5001/addnote", newNote);
 
       router.push("/"); // ✅ Go back to home screen

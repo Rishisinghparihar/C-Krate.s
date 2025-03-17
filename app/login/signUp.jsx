@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { useNavigation, useRouter } from "expo-router";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import Feather from '@expo/vector-icons/Feather'; // Importing Feather icons
+import Feather from '@expo/vector-icons/Feather'; 
 import axios from "axios";
 
 const SignUpScreen = () => {

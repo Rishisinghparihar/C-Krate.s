@@ -1,7 +1,6 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { Image, StyleSheet } from 'react-native'
-// import colors from '../../constant/colors'
 import {router, useRouter} from 'expo-router'
 export default function LoginScreen() {
     const router= useRouter()
@@ -23,7 +22,6 @@ export default function LoginScreen() {
             padding:25,
             display:'flex',
             alignItems:'center',
-            // justifyContent:'center',
             backgroundColor:'#4b3f96',
             height:'300%'
         }}>
@@ -39,7 +37,6 @@ export default function LoginScreen() {
             color:'white',
             fontSize:17,
             marginTop:27,
-            // fontWeight:'bold'
         }}>"Stay on Track, Stay Healthy: Your Smart Medicine Companion."</Text>
         <TouchableOpacity
         onPress={()=>router.push('/login/signIn')}
@@ -52,7 +49,6 @@ export default function LoginScreen() {
             fontSize:15,
             marginTop:10,
             padding:10
-            // fontWeight:'bold'
         }}
         >Note: By clicking continue you accept our terms and conditions</Text>
         </View>
@@ -64,11 +60,9 @@ const styles = StyleSheet.create({
     Image:{
         width: 100,
         height: 100,
-        // resizeMode: 'contain',
     },
     button:{
         padding:15,
-        // color:'white',
         fontSize:17,
         marginTop:50,
         fontWeight:'bold',

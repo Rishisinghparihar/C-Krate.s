@@ -8,15 +8,15 @@ import PinLockModal from "../components/PinLockModal";
 
 const NoteDetails = () => {
   const router = useRouter();
-  const params = useLocalSearchParams(); // 🔥 Params milenge yaha se
+  const params = useLocalSearchParams();
   const [isLocked, setIsLocked] = useState(params.isLocked || false);
   const [pinModalVisible, setPinModalVisible] = useState(false);
   const [isUnlocked, setIsUnlocked] = useState(false);
 
-  // 🔐 Lock/Unlock Function
+  // Lock/Unlock Function
   const handleToggleLock = async () => {
     if (isLocked) {
-      setPinModalVisible(true); // Unlock के लिए PIN Modal दिखाओ
+      setPinModalVisible(true); // Unlock k liye pin 
     } else {
       Alert.alert(
         "Set Lock",
@@ -39,7 +39,7 @@ const NoteDetails = () => {
     }
   };
 
-  // 🗑 Delete Function
+  // Delete Function
   const handleDelete = async () => {
     Alert.alert(
       "Confirm Delete",
@@ -50,7 +50,7 @@ const NoteDetails = () => {
           text: "OK",
           onPress: async () => {
             try {
-              // 1️⃣ **Delete from AsyncStorage**
+              //  **Delete from AsyncStorage**
               const storedNotes = await AsyncStorage.getItem("notes");
               if (storedNotes) {
                 let notes = JSON.parse(storedNotes);
@@ -58,10 +58,10 @@ const NoteDetails = () => {
                 await AsyncStorage.setItem("notes", JSON.stringify(notes));
               }
 
-              // 2️⃣ **Delete from MongoDB**
+              //  **Delete from MongoDB**
               await axios.delete(`http://localhost:5001/notes/${params._id}`);
 
-              // 3️⃣ **Navigate Back**
+              //  **Navigate Back**
               router.back();
             } catch (error) {
               console.error("Error deleting note:", error);
@@ -74,22 +74,22 @@ const NoteDetails = () => {
 
   return (
     <ScrollView style={styles.container}>
-      {/* 🔙 Back Button */}
+      {/* Back Button */}
       <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
         <Feather name="arrow-left" size={24} color="white" />
       </TouchableOpacity>
 
-      {/* 🔐 Lock Button (Top Right) */}
+      {/* Lock Button (Top Right) */}
       <TouchableOpacity style={styles.lockButton} onPress={handleToggleLock}>
         <Feather name={isLocked ? "lock" : "unlock"} size={24} color="yellow" />
       </TouchableOpacity>
 
-      {/* 🗑 Delete Button */}
+      {/* Delete Button */}
       <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
         <Feather name="trash" size={24} color="red" />
       </TouchableOpacity>
 
-      {/* 🔑 PIN Lock Modal */}
+      {/* PIN Lock Modal */}
       {isLocked && !isUnlocked && (
         <PinLockModal 
           visible={pinModalVisible} 
@@ -101,16 +101,16 @@ const NoteDetails = () => {
         />
       )}
 
-      {/* ✅ Check ki Params aaye ya nahi */}
+      {/* Check ki Params aaye ya nahi */}
       {params?.title && params?.content ? (
         isLocked && !isUnlocked ? (
           <Text style={styles.lockedText}>🔒 This note is locked. Enter PIN to view.</Text>
         ) : (
           <>
-            {/* 📌 Note Title */}
+            {/* Note Title */}
             <Text style={styles.title}>{params.title}</Text>
 
-            {/* 📜 Note Content */}
+            {/* Note Content */}
             <Text style={styles.content}>{params.content}</Text>
           </>
         )
