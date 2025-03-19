@@ -73,7 +73,6 @@ const Profile = ({ onEditPress }) => {
 
   return (
     <>
-      {" "}
       <View style={styles.container}>
         <Image
           source={
