@@ -24,14 +24,17 @@ const HomeScreen = ({ navigation }) => {
         // Load from AsyncStorage First
         const storedNotes = await AsyncStorage.getItem("notes");
         if (storedNotes) setNotes(JSON.parse(storedNotes));
-
+        const token = await AsyncStorage.getItem("token");
+        console.log("Token",token);
         // Load from MongoDB
-        const res = await axios.get("http://localhost:5001/notes"); // 🚀 Localhost Fix
+        const res = await axios.post("http://192.168.143.169:5001/notes", token); // 🚀 Localhost Fix
         if (res.data.status === "ok") {
+          console.log(res.data);
           setNotes(res.data.notes);
           await AsyncStorage.setItem("notes", JSON.stringify(res.data.notes));
         }
       } catch (error) {
+        console.error({error});
         console.error("Error fetching notes:", error);
       }
     };
@@ -79,6 +82,7 @@ const HomeScreen = ({ navigation }) => {
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <TouchableOpacity
+          key={item}
             style={styles.noteCard}
             onPress={() =>
               router.push({

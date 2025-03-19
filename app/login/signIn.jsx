@@ -19,7 +19,7 @@ const SignUpScreen = () => {
       email: email,
       password,
     }
-    axios.post('http://localhost:5001/login', userData).then(res=>
+    axios.post('http://192.168.143.169:5001/login', userData).then(res=>
     {console.log(res.data);
       if (res.data.status =="ok"){
         Alert.alert('sign in successfull');

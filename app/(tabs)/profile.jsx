@@ -27,7 +27,7 @@ const Profile = ({ onEditPress }) => {
       }
       console.log("Retrieved Token:", token);
 
-      const res = await axios.post("http://localhost:5001/userdata", { token });
+      const res = await axios.post("http://192.168.143.169:5001/userdata", { token });
       console.log("User Data:", res);
       console.log("Full Response Data:", res.data);
 
@@ -60,7 +60,8 @@ const Profile = ({ onEditPress }) => {
 
   const onLogout = async () => {
     try {
-      await AsyncStorage.removeItem("Token");
+      await AsyncStorage.clear();
+      // AsyncStorage.clear()
       console.log("Token removed, user logged out!");
 
       Alert.alert("Logout Successful", "You have been logged out.");

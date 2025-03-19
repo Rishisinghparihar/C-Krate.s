@@ -4,7 +4,7 @@ import { useNavigation, useRouter } from "expo-router";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Feather from '@expo/vector-icons/Feather'; 
 import axios from "axios";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const SignUpScreen = () => {
   const router = useRouter();
   const [userName, setUserName] = useState("");
@@ -21,7 +21,7 @@ const SignUpScreen = () => {
       email: email,
       password: password
     }
-    axios.post('http://localhost:5001/register', userData) .then(res=> console.log(res.data)) .catch(e=> console.log(e)); //change localhost:5001 to ipv4 ipconfig of the pc if using on mobile or emulator
+    axios.post('http://192.168.143.169:5001/register', userData) .then(res=> AsyncStorage.setItem("token",res.data.token)) .catch(e=> console.log(e)); //change localhost:5001 to ipv4 ipconfig of the pc if using on mobile or emulator
     router.push("/allNotes");
   }
 

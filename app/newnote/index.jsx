@@ -17,17 +17,18 @@ const NewNote = () => {
       const notes = storedNotes ? JSON.parse(storedNotes) : [];
 
       // Add new note
-      const newNote = { text: note };
-      const updatedNotes = [...notes, newNote];
-
+      const newNote = { content: note };
+      // const updatedNotes = [...notes, newNote];
+      //  const token= , title, content
       // Save locally
       await AsyncStorage.setItem("notes", JSON.stringify(updatedNotes));
 
       // Save to MongoDB
-      await axios.post("http://localhost:5001/addnote", newNote);
+      await axios.post("http://192.168.143.169:5001/addnote", newNote);
 
       router.push("/"); // ✅ Go back to home screen
     } catch (error) {
+      console.log({error});
       console.error("Error saving note:", error);
     }
   };

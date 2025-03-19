@@ -56,15 +56,16 @@ const Header = ({
       await AsyncStorage.setItem("notes", JSON.stringify(updatedNotes));
 
       // Save in MongoDB via API
-      await axios.post("https://localhost:5001/addnote", newNote);
+      await axios.post("http://192.168.143.169:5001/addnote", newNote);
 
       // Update parent component state
-      onAddNote(newNote);
+      // onAddNote(newNote);
 
       // Reset Input Fields
       setTitle("");
       setContent("");
     } catch (error) {
+      // console.error({error});
       console.error("Error saving note:", error);
     }
   };

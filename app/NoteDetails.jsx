@@ -59,7 +59,7 @@ const NoteDetails = () => {
               }
 
               //  **Delete from MongoDB**
-              await axios.delete(`http://localhost:5001/notes/${params._id}`);
+              await axios.delete(`http://192.168.143.169:5001/notes/${params._id}`);
 
               //  **Navigate Back**
               router.back();
