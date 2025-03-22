@@ -11,6 +11,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { getConfig } from "../../assets/axiosconfig";
 
 const HomeScreen = ({ navigation }) => {
   const [notes, setNotes] = useState([]);
@@ -27,7 +28,7 @@ const HomeScreen = ({ navigation }) => {
         const token = await AsyncStorage.getItem("token");
         console.log("Token",token);
         // Load from MongoDB
-        const res = await axios.post("http://192.168.143.169:5001/notes", token); // 🚀 Localhost Fix
+        const res = await axios.get("http://192.168.143.169:5001/notes/mynotes", await getConfig()); // 🚀 Localhost Fix
         if (res.data.status === "ok") {
           console.log(res.data);
           setNotes(res.data.notes);

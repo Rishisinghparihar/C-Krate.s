@@ -17,6 +17,7 @@ import axios from "axios";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Entypo from "@expo/vector-icons/Entypo";
 import { pickImage } from "../../components/imagepicker";
+import { getConfig } from "../../assets/axiosconfig";
 const Header = ({
   onAddNote,
   onDeleteNote,
@@ -55,8 +56,10 @@ const Header = ({
       const updatedNotes = [...existingNotes, newNote];
       await AsyncStorage.setItem("notes", JSON.stringify(updatedNotes));
 
-      // Save in MongoDB via API
-      await axios.post("http://192.168.143.169:5001/addnote", newNote);
+      // Save in MongoDB via API(
+     const response =  await axios.post("http://192.168.143.169:5001/notes/addnote", newNote, await getConfig());
+     
+      console.log({response});
 
       // Update parent component state
       // onAddNote(newNote);

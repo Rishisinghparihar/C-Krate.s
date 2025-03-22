@@ -55,7 +55,7 @@ const Profile = ({ onEditPress }) => {
   }, []);
 
   if (loading) {
-    return <Text>Loading...</Text>;
+    return <Text style={styles.Loading}>Loading...</Text>;
   }
 
   const onLogout = async () => {
@@ -158,6 +158,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+  Loading:{
+    marginTop:70,
+    color: "#333",
+    justifyContent:"center",
+    textAlign: "center",
+  }
 });
 
 export default Profile;
