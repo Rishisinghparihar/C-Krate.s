@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
+import { ip } from "../lib/ip";
 
 const Profile = ({ onEditPress }) => {
   const [userData, setUserData] = useState({});
@@ -27,8 +28,8 @@ const Profile = ({ onEditPress }) => {
       }
       console.log("Retrieved Token:", token);
 
-      const res = await axios.post("http://192.168.143.169:5001/userdata", { token });
-      console.log("User Data:", res);
+      const res = await axios.post(`http://192.168.31.157:5001/userdata`, { token });
+      console.log("User Data:", ip , res);
       console.log("Full Response Data:", res.data);
 
       if (res.data.status === "ok") {

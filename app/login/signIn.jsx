@@ -4,6 +4,7 @@ import { useRouter } from "expo-router";
 import { MaterialIcons, Feather } from "@expo/vector-icons";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ip } from "../lib/ip";
 const SignUpScreen = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -19,7 +20,8 @@ const SignUpScreen = () => {
       email: email,
       password,
     }
-    axios.post('http://192.168.143.169:5001/login', userData).then(res=>
+    console.log(ip);
+    axios.post(`http://192.168.31.157:5001/login`, userData).then(res=>
     {console.log(res.data);
       if (res.data.status =="ok"){
         Alert.alert('sign in successfull');

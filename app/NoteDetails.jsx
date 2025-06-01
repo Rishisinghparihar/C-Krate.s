@@ -5,6 +5,7 @@ import { Feather } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import PinLockModal from "../components/PinLockModal";
+import { getConfig } from "../assets/axiosconfig";
 
 const NoteDetails = () => {
   const router = useRouter();
@@ -52,6 +53,8 @@ const NoteDetails = () => {
             try {
               //  **Delete from AsyncStorage**
               const storedNotes = await AsyncStorage.getItem("notes");
+              console.log("Stored Notes:", storedNotes);
+              console.log("Note ID to delete:", params._id);
               if (storedNotes) {
                 let notes = JSON.parse(storedNotes);
                 notes = notes.filter((note) => note._id !== params._id);
@@ -59,7 +62,7 @@ const NoteDetails = () => {
               }
 
               //  **Delete from MongoDB**
-              await axios.delete(`http://192.168.143.169:5001/notes/${params._id}`);
+              await axios.delete(`http://192.168.31.157:5001/notes/deletenote/${params._id}`, await getConfig());
 
               //  **Navigate Back**
               router.back();

@@ -18,6 +18,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Entypo from "@expo/vector-icons/Entypo";
 import { pickImage } from "../../components/imagepicker";
 import { getConfig } from "../../assets/axiosconfig";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 const Header = ({
   onAddNote,
   onDeleteNote,
@@ -57,7 +58,7 @@ const Header = ({
       await AsyncStorage.setItem("notes", JSON.stringify(updatedNotes));
 
       // Save in MongoDB via API(
-     const response =  await axios.post("http://192.168.143.169:5001/notes/addnote", newNote, await getConfig());
+     const response =  await axios.post("http://192.168.31.157:5001/notes/addnote", newNote, await getConfig());
      
       console.log({response});
 
@@ -74,7 +75,7 @@ const Header = ({
   };
 
   return (
-    <>
+    <>    
       <View>
         <View style={styles.headerContainer}>
           <Text style={styles.title}>C-Krate.s</Text>
@@ -148,8 +149,8 @@ const Header = ({
         >
           <Text style={styles.button1}>cancel</Text>
           {/* <Entypo name="cross" size={26} color="red" /> */}
-        </TouchableOpacity>
-        <TouchableOpacity onPress={addNote}>
+        </TouchableOpacity >
+        <TouchableOpacity onPress={addNote} >
           <Text style={styles.button1}>Add</Text>
           {/* <MaterialIcons name="done" size={24} color="green" /> */}
         </TouchableOpacity>
@@ -308,14 +309,20 @@ const styles = StyleSheet.create({
     gap: 60,
     alignItems: "center",
     justifyContent: "flex-end",
-    marginBottom: 100,
+    marginBottom: 50,
+    marginLeft: 220,
   },
   button1: {
     backgroundColor: "gray",
     padding: 10,
     borderRadius: 8,
-    fontSize: 18,
-    borderColor: "black",
+    fontSize: 14,
+    borderColor: "white",
+    height: 40,
+    width: 80,
+    justifyContent:"flex-end",
+    alignItems: "flex-end",
+    display: "flex",
   },
   to1: {},
   viewaibutton: {

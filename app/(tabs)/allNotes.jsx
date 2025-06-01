@@ -28,7 +28,7 @@ const HomeScreen = ({ navigation }) => {
         const token = await AsyncStorage.getItem("token");
         console.log("Token",token);
         // Load from MongoDB
-        const res = await axios.get("http://192.168.143.169:5001/notes/mynotes", await getConfig()); // 🚀 Localhost Fix
+        const res = await axios.get("http://192.168.31.157:5001/notes/mynotes", await getConfig()); // 🚀 Localhost Fix
         if (res.data.status === "ok") {
           console.log(res.data);
           setNotes(res.data.notes);
@@ -89,9 +89,10 @@ const HomeScreen = ({ navigation }) => {
               router.push({
                 pathname: "/NoteDetails",
                 params: {
+                    _id: item._id,
                   title: item.title,
                   content: item.content,
-                  date: item.date,
+                  // date: item.date,
                 },
               })
             }
